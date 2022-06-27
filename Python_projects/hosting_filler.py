@@ -33,7 +33,7 @@ time.sleep(2)
 driver.get("https://suite.adnami.io/hosting")
 
 # Get desired selected element and dropdown
-driver.implicitly_wait(5)
+driver.implicitly_wait(10)
 organisation_dropdown = driver.find_elements(By.XPATH, "(//div[@class='multiselect__tags'])[1]")
 selectElem = driver.find_element(By.XPATH, "//span[contains(text(),'Adnami Development')]")
 
@@ -43,11 +43,11 @@ organisation_dropdown[0].click()
 selectElem.click()
 
 # Open second dropdown
-driver.implicitly_wait(2)
+# driver.implicitly_wait(2)
 second_drop = driver.find_elements(By.XPATH, "(//div[@class='multiselect__tags'])[2]")
 second_drop[0].click()
 
-driver.implicitly_wait(5)
+# driver.implicitly_wait(5)
 # Select 'Certification Ads'
 select_drop2 = driver.find_element(By.XPATH, "//span[contains(text(),'Certification Ads')]")
 select_drop2.click()
