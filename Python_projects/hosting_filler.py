@@ -32,6 +32,7 @@ time.sleep(2)
 driver.get("https://suite.adnami.io/hosting")
 
 # Get DOM pulled for 10 secs
+time.sleep(2)
 driver.implicitly_wait(10)
 # Get organisation dropdown
 organisation_dropdown = driver.find_elements(By.XPATH, "(//div[@class='multiselect__tags'])[1]")
