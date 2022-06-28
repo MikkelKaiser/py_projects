@@ -11,7 +11,7 @@ import config
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-# Open up site
+# Open up suite
 driver.get("https://suite.adnami.io")
 
 # get email, password and btn input fields
@@ -27,46 +27,43 @@ password.send_keys(config.password)
 # Submit the login
 submit_btn.click()
 
-
-# After login go to hosting url
+# After login go to hosting url and wait 2 seconds for site load
 time.sleep(2)
 driver.get("https://suite.adnami.io/hosting")
 
-# Get desired selected element and dropdown
+# Get DOM pulled for 10 secs
 driver.implicitly_wait(10)
+# Get organisation dropdown
 organisation_dropdown = driver.find_elements(By.XPATH, "(//div[@class='multiselect__tags'])[1]")
-selectElem = driver.find_element(By.XPATH, "//span[contains(text(),'Adnami Development')]")
-
 # open dropdown
 organisation_dropdown[0].click()
-# Select 'Adnami Development'
+
+# Get dropdown option 'Adnami Development'
+selectElem = driver.find_element(By.XPATH, "//span[contains(text(),'Adnami Development')]")
+# Select the option
 selectElem.click()
 
 # Open second dropdown
-# driver.implicitly_wait(2)
 second_drop = driver.find_elements(By.XPATH, "(//div[@class='multiselect__tags'])[2]")
 second_drop[0].click()
-
-# driver.implicitly_wait(5)
-# Select 'Certification Ads'
+# Get 'Certification Ads'
 select_drop2 = driver.find_element(By.XPATH, "//span[contains(text(),'Certification Ads')]")
 select_drop2.click()
+
 
 # Fill in the campaign name
 campaign_name = driver.find_element(By.XPATH, "(//input[@type='text'])[4]")
 campaign_name.send_keys(" - Hosting")
 
-# campaign_description = driver.find_element(By.ID, 'input-81')
-# time.sleep(0.5)
-# campaign_description.send_keys("Random desc")
-# time.sleep(1)
+campaign_description = driver.find_element(By.XPATH, "(//textarea)[1]")
+campaign_description.send_keys("Random desc")
 
-# country_dropdown = driver.find_element(By.CLASS_NAME, "multiselect.country-filter-input")
-# selectCountry =  driver.find_element(By.XPATH, "//span[text()='Denmark']")
-# time.sleep(1)
-# country_dropdown.click()
-# time.sleep(1)
-# selectCountry.click()
+country_dropdown = driver.find_element(By.XPATH, "(//div[@class='multiselect__tags'])[3]")
+selectCountry =  driver.find_element(By.XPATH, "//span[contains(text(),'Denmark')]")
+
+country_dropdown.click()
+selectCountry.click()
+
 
 # Wait time before closing window
 time.sleep(40)
