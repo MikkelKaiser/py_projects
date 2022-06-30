@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
 import time
 import config
 import glob
@@ -11,7 +12,13 @@ import glob
 # Manual chrome version download here
 # Download your chrome driver for script here => https://chromedriver.chromium.org/downloads
 
-file_path = glob.glob('C:/Users/MikkelAndersen/Desktop/Hosting/*.zip')
+try:
+    file_path = glob.glob('C:/Users/Mikke/Desktop/Hosting/*.zip')
+    file_path.sort(key=os.path.getmtime, reverse=True)
+except:
+    print("error")
+
+
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # Open up suite
@@ -104,7 +111,7 @@ finally:
             (By.XPATH, "//input[@accept='image/*']"))
     )
 
-    zip_upload.send_keys(file_path)
+    zip_upload.send_keys(file_path[0])
 
     hosted_path = driver.find_element(
         By.CSS_SELECTOR, 'tbody tr td:nth-child(3)')
@@ -124,7 +131,8 @@ finally:
     # Click save and publish button
     save_btn.click()
     live_btn = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "(//button[@class='ml-6 v-btn v-btn--flat v-btn--icon v-btn--round theme--dark v-size--default primary--text'])[1]"))
+        EC.element_to_be_clickable(
+            (By.XPATH, "(//button[@class='ml-6 v-btn v-btn--flat v-btn--icon v-btn--round theme--dark v-size--default primary--text'])[1]"))
     )
     # time.sleep(1)
     live_btn.click()
