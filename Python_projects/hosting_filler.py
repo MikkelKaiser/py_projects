@@ -13,7 +13,7 @@ import glob
 # Download your chrome driver for script here => https://chromedriver.chromium.org/downloads
 
 try:
-    file_path = glob.glob('C:/Users/Mikke/Desktop/Hosting/*.zip')
+    file_path = glob.glob('C:/Users/MikkelAndersen/Desktop/Hosting/*.zip')
     file_path.sort(key=os.path.getmtime, reverse=True)
 except:
     print("error")
