@@ -5,18 +5,19 @@ import re
 import sys
 import fileinput
 
-publishers = os.listdir('C:/Users/Mikke/OneDrive/Desktop/Projekter/new-adnami-publishers/adnami-publishers/src/publishers')
+publishers = os.listdir('C:/Users/MikkelAndersen/Desktop/Repos/adnami-publishers/src/publishers')
 cert_log_defined = "Certified format;Date modified;Updated by"
-publisher_to_replace = "publisher: ['MSO Digital']"
-publisher_defined = "publisher: ['MSO']"
+publisher_to_replace = "publisher: ['Mediaforce 1XL']"
+publisher_defined = "publisher: ['Mediaforce']"
 publisher_to_replace_spot = "}"
 default_publisher = "  publisher: ['Unknown'] // Added default publisher \n }"
-
+publisher_information_defined = "publisher_information;"
+publisher_info_existing = False
 
 
 for publisher in publishers:
-    fileToSearch  = 'C:/Users/Mikke/OneDrive/Desktop/Projekter/new-adnami-publishers/adnami-publishers/src/publishers/' + publisher + '/config.js'
-    update_cert_log = "C:/Users/Mikke/OneDrive/Desktop/Projekter/new-adnami-publishers/adnami-publishers/src/publishers/" + publisher + "/cert_log.csv"
+    fileToSearch  = 'C:/Users/MikkelAndersen/Desktop/Repos/adnami-publishers/src/publishers/' + publisher + '/config.js'
+    update_cert_log = "C:/Users/MikkelAndersen/Desktop/Repos/adnami-publishers/src/publishers/" + publisher + "/cert_log.csv"
     try:
         if exists(fileToSearch):
             with open(fileToSearch) as x:
@@ -46,7 +47,7 @@ for publisher in publishers:
                     # f.close()
         else:
             # Could not find config.js in the given PATH
-            print("Config does not exist")
+            print(f"Config on {publisher} does not exist")
 
         def update_log(update_cert_log):
             date_today = datetime.today().strftime('%Y-%m-%d')
@@ -67,26 +68,42 @@ for publisher in publishers:
                             f = open(update_cert_log, 'w')
                             f.write(updated_cert_log)
                             f.close()
-
-                        if cert_log_defined in line:
+                        
+                        if publisher_information_defined in line:
+                            publisher_info_existing = True
                             old_log_line = line
+                            
+                        elif cert_log_defined in line:
+                            publisher_info_existing = False
+                            old_log_line = line
+                
+                if publisher_info_existing:
+                    f = open(update_cert_log, 'r')
+                    file_data = f.read()
+                    f.close()
 
-                f = open(update_cert_log, 'r')
-                file_data = f.read()
-                f.close()
+                    updated_cert_log = file_data.replace(old_log_line, "publisher_information;" + date_today + ";mka\n")
 
-                updated_cert_log = file_data.replace(old_log_line, new_log_line)
+                    f = open(update_cert_log, 'w')
+                    f.write(updated_cert_log)
+                    f.close()
+                else:
+                    f = open(update_cert_log, 'r')
+                    file_data = f.read()
+                    f.close()
 
-                f = open(update_cert_log, 'w')
-                f.write(updated_cert_log)
-                f.close()
+                    updated_cert_log = file_data.replace(old_log_line, new_log_line)
+
+                    f = open(update_cert_log, 'w')
+                    f.write(updated_cert_log)
+                    f.close()
             else:
-                # This gets hit if it couldn't find the cert_log file => create one and insert the data
+                # This gets hit if it couldn't find the cert_log file => create one and insert the dataj
                 f = open(update_cert_log, 'w')
                 f.write(new_log_line)
                 f.close()
     except:
-        print("Error")
+        print(f"Error on {publisher}")
 
 
 
